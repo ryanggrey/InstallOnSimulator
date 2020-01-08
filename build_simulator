@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+xcodebuild \
+  -scheme InstallOnSimulator \
+  -project InstallOnSimulator.xcodeproj \
+  -configuration Debug \
+  -destination 'platform=iOS Simulator,name=iPhone 11,OS=13.3' \
+  -derivedDataPath \
+  build \
+
+mkdir -p simulator_build
+mv "build/Build/Products/Debug-iphonesimulator/InstallOnSimulator.app" "simulator_build/InstallOnSimulator.app"
+
+xcrun simctl shutdown all
+xcrun simctl boot "iPhone 11"
+xcrun simctl install "iPhone 11" simulator_build/InstallOnSimulator.app
